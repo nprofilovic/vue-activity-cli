@@ -3,7 +3,7 @@
     <nav class="navbar is-white topNav">
       <div class="container">
         <div class="navbar-brand">
-          <h1>Activity Planner</h1>
+          <h1>{{ fullAppName }}</h1> 
         </div>
       </div>
     </nav>
@@ -67,6 +67,7 @@
                 <div class="control">
                   <button
                     class="button is-link"
+                    :disabled="!isFormValid"
                     @click="createActivity"
                   >
                     Create Activity
@@ -100,7 +101,7 @@
 
 <script>
 import ActivityItem from '@/components/ActivityItem'
-import { fetchActivities } from '@/api'
+import { fetchActivities, fetchUsers, fetchCategories } from '@/api'
 
 export default {
   name: 'App',
@@ -110,38 +111,40 @@ export default {
   data (){
     return {
       isFormDisplayed: false,
-      message: 'Hello Vue!',
-      titleMessage: 'Title Message Vue!!!!!',
-      isTextDisplayed: true,
+      creator: 'Nikola Profilovic',
+      appName: 'Activity Planer',
+      watchAppName: 'Activity Planer by Nikola Profilovic',
       newActivity: {
         title: '',
         notes: ''
       },
       items: {1: {name: 'Filip'}, 2: {name: 'John'}},
-      user: {
-        name: 'Filip Jerga',
-        id: '-Aj34jknvncx98812',
-      },
+      user: {},
       activities: {}, 
-      categories: {
-        '1546969049': {text: 'books'},
-        '1546969225': {text: 'movies'}
-      }
+      categories: {}
+    }
+  },
+  computed: {
+    isFormValid () {
+      return this.newActivity.title && this.newActivity.notes
+    },
+    fullAppName () {
+      return this.appName + ' by ' + this.creator
     }
   },
   created () {
     this.activities = fetchActivities()
+    this.categories = fetchCategories()
+    this.user = fetchUsers()
   },
   methods: {
-    toggleTextDisplay () {
-      this.isTextDisplayed = !this.isTextDisplayed
-    },
     toggleFormDisplay () {
       this.isFormDisplayed = !this.isFormDisplayed
     },
     createActivity () {
       console.log(this.newActivity)
-    }
+    },
+    
   } 
 }
 </script>
