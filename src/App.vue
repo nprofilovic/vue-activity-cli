@@ -63,6 +63,15 @@
                   />
                 </div>
               </div>
+              <div class="field">
+                <label class="label">Category</label>
+                <div class="control">
+                  <select v-model="newActivity.category" class="select">
+                    <option disabled value="">Please Select One</option>
+                    <option v-for="category in categories" :key="category.id">{{ category.text }}</option>
+                  </select>
+                </div>
+              </div>
               <div class="field is-grouped">
                 <div class="control">
                   <button
@@ -92,6 +101,8 @@
               :key="activity.id"
               :activity="activity"
             /> 
+            <div class="activity-length">Currenly {{ activityLength }} activities</div>
+            <div class="activity-motivation">{{ activityMotivation }}</div>
           </div>
         </div>
       </div>
@@ -116,7 +127,8 @@ export default {
       watchAppName: 'Activity Planer by Nikola Profilovic',
       newActivity: {
         title: '',
-        notes: ''
+        notes: '',
+        category: ''
       },
       items: {1: {name: 'Filip'}, 2: {name: 'John'}},
       user: {},
@@ -130,6 +142,19 @@ export default {
     },
     fullAppName () {
       return this.appName + ' by ' + this.creator
+    },
+    activityLength () {
+      return Object.keys(this.activities).length
+    },
+    activityMotivation () {
+      if (this.activityLength && this.activityLength < 5) {
+        return 'Nice to see some activities (:'
+      } else if (this.activityLength >= 5) {
+        return 'So many activities! Good Job!'
+      }
+      else {
+        return 'No activities :('
+      }
     }
   },
   created () {
@@ -168,8 +193,12 @@ footer {
   background-color: #F2F6FA !important;
 }
 
-.example-wrapper {
-  margin-left: 30px;
+.activity-motivation {
+  float: right;
+}
+
+.activity-length {
+  display: inline-block;
 }
 
 .topNav {
