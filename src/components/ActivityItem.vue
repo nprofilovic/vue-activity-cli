@@ -12,12 +12,12 @@
       <div class="media-content">
         <div class="content">
           <p>
-            <a href="#">Filip Jerga</a> updated {{ activity.updatedAt }} minutes ago &nbsp;
+            <a href="#">Filip Jerga</a> updated {{ activity.updatedAt | prettyTime }} 
           </p>
         </div>
       </div>
       <div class="media-right">
-        <span>Progress: <span :style="{'color' : activityProgress}">{{activity.progress}} %</span></span>
+        <span>Progress: <span :style="{'color' : activityProgress}">{{ activity.progress }} %</span></span>
       </div>
     </div>
   </article> 
@@ -26,6 +26,7 @@
 <script>
 import textUtility from '@/mixins/textUtility'
 export default {
+    mixins: [textUtility],
     props: {
       categories: {
         type: Object,
@@ -36,7 +37,6 @@ export default {
         required: true
       }
     },
-    mixins: [textUtility],
     computed: {
       activityProgress () {
         const progress = this.activity.progress
