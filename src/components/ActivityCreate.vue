@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import { createActivity } from '@/api'
+import { createActivityAPI } from '@/api'
 export default {
     props: {
       categories: {
@@ -90,16 +90,23 @@ export default {
     
     computed: {
       isFormValid () {
-        return this.newActivity.title && this.newActivity.notes
+        return this.newActivity.title && this.newActivity.notes && this.newActivity.category
       },
     },
     methods: {
       toggleFormDisplay () {
         this.isFormDisplayed = !this.isFormDisplayed
       },
+      resetActivity () {
+        this.newActivity.title = ''
+        this.newActivity.notes = ''
+        this.newActivity.categories = ''
+        this.isFormDisplayed = false
+      },
       createActivity () {
-        createActivityAPI(this.newActivity)
+        createActivityAPI({...this.newActivity})
           .then(activity => {
+            this.resetActivity()
             this.$emit('activityCreated', {...activity})
           })
       },
