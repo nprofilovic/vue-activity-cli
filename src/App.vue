@@ -12,12 +12,12 @@
       <div class="columns">
         <div class="column is-3">
           <ActivityCreate
-            @activityCreated="addActivity" 
             :categories="categories"
+            @activityCreated="addActivity" 
           />
         </div>
         <div class="column is-9">
-          <div class="box content" :class="{fetching: isFetching, 'has-error': error}" >
+          <div class="box content" :class="{fetching: isFetching, 'has-error': error}">
             <div v-if="error">
               {{ error }}
             </div>
