@@ -14,6 +14,7 @@
           <ActivityCreate
             :categories="categories"
             @activityCreated="addActivity" 
+            @activityDeleted="handleActivityDelete"
           />
         </div>
         <div class="column is-9">
@@ -110,6 +111,9 @@ export default {
   methods: {
     addActivity (newActivity) {
       Vue.set(this.activities, newActivity.id, newActivity) 
+    },
+    handleActivityDelete (activity) {
+      console.log(activity);
     }
   } 
 }

@@ -80,15 +80,14 @@ export default {
       }
     },
     data () {
-        return {
-            isFormDisplayed: false,
-            newActivity: {
-              title: '',
-              notes: '',
-              category: ''
-            },
-            
-        }
+      return {
+          isFormDisplayed: false,
+          newActivity: {
+            title: '',
+            notes: '',
+            category: ''
+          },
+      }
     },
     
     computed: {
