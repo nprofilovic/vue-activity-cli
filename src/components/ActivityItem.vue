@@ -2,7 +2,7 @@
   <article class="post">
     <div class="activity-title-wrapper">
       <h4 class="title">{{ activity.title }}</h4>
-      <i class="fas fa-cog activity-settings" @click="isMenuDisplayed = !isMenuDisplayed" />
+      <i class="fas fa-cog activity-settings" @click="toggleMenuDisplay" />
     </div>
     <p>{{ textUtility_capitalize(categories[activity.category].text) }}</p>
     <p>{{ activity.notes }}</p>
@@ -59,15 +59,17 @@ export default {
         }else {
           return 'green'
         }
-      },
-      methods: {
-        deleteActivity() {
-          this.$emit('activityDeleted', this.activity)
-          
-        }
-      },
+      }
     },
-    
+    methods: {
+      toggleMenuDisplay () {
+        this.isMenuDisplayed = !this.isMenuDisplayed
+      },
+      deleteActivity () {
+        this.$emit('activityDeleted', this.activity)
+        
+      }
+    },
 }
 </script>
 

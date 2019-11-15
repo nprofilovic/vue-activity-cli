@@ -31,6 +31,7 @@
                 :key="activity.id"
                 :activity="activity"
                 :categories="categories"
+                @activityDeleted="handleActivityDelete"
               /> 
             </div>
             <div v-if="!isFetching">
