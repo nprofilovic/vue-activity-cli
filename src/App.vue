@@ -47,10 +47,11 @@
 
 <script>
 import Vue from 'vue'
+import store from './store'
 import ActivityItem from '@/components/ActivityItem'
 import ActivityCreate from '@/components/ActivityCreate'
 import TheNavbar from '@/components/TheNavbar'
-import { fetchActivities, fetchUsers, fetchCategories, deleteActivityAPI } from '@/api'
+// import { fetchActivities, fetchUsers, fetchCategories, deleteActivityAPI } from '@/api'
 
 export default {
   name: 'App',
@@ -60,14 +61,15 @@ export default {
     TheNavbar
   },
   data (){
+    const { state: {activities, categories} } = store
     return {
       creator: 'Nikola Profilovic',
       appName: 'Activity Planer',
       isFetching: false,
       error: null,
       user: {},
-      activities: null, 
-      categories: null
+      activities, 
+      categories
     }
   },
   computed: {
@@ -93,9 +95,8 @@ export default {
   },
   created () {
     this.isFetching = true
-    fetchActivities()
+    store.fetchActivities()
       .then(activities => {
-        this.activities = activities
         this.isFetching = false
       })
       .catch(err => {
@@ -103,10 +104,9 @@ export default {
         this.isFetching = false
       })
     
-    this.user = fetchUsers()
-    fetchCategories()
+    this.user = store.fetchUsers()
+    store.fetchCategories()
       .then(categories => {
-        this.categories = categories
     })
   },
   methods: {
@@ -114,7 +114,7 @@ export default {
       Vue.set(this.activities, newActivity.id, newActivity) 
     },
     handleActivityDelete (activity) {
-      deleteActivityAPI(activity)
+      store.deleteActivityAPI(activity)
         .then(deleteActivity => {
           Vue.delete(this.activities, deleteActivity.id)
         })
