@@ -59,6 +59,7 @@
 
 <script>
 import textUtility from '@/mixins/textUtility'
+import store from '@/store'
 export default {
     mixins: [textUtility],
     props: {
@@ -78,10 +79,12 @@ export default {
       }
     },
     methods: {
-        updateActivity () {
-            console.log(this.activity);
-            
-        }
+      updateActivity () {
+        store.updateActivity(this.modifiedActivity)
+          .then(() => {
+            this.$emit('toggleUpdate', false)
+          })          
+      }
     }
 }
 </script>

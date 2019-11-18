@@ -32,6 +32,7 @@
 
 <script>
 import textUtility from '@/mixins/textUtility'
+import store from '@/store'
 export default {
     mixins: [textUtility],
     props: {
@@ -66,7 +67,8 @@ export default {
         this.isMenuDisplayed = !this.isMenuDisplayed
       },
       deleteActivity () {
-        this.$emit('activityDeleted', this.activity)
+        store.deleteActivity(this.activity)
+        // this.$emit('activityDeleted', this.activity)
         
       }
     },

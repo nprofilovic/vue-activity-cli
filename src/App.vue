@@ -13,8 +13,7 @@
         <div class="column is-3">
           <ActivityCreate
             :categories="categories"
-            @activityCreated="addActivity" 
-            @activityDeleted="handleActivityDelete"
+            
           />
         </div>
         <div class="column is-9">
@@ -31,7 +30,7 @@
                 :key="activity.id"
                 :activity="activity"
                 :categories="categories"
-                @activityDeleted="handleActivityDelete"
+                
               /> 
             </div>
             <div v-if="!isFetching">
@@ -89,8 +88,14 @@ export default {
         return 'No activities :('
       }
     },
+    activitiesLength () {
+      return Object.keys(this.activities).length
+    },
+    categoriesLength () {
+      return Object.keys(this.categories).length
+    },
     isDataLoaded () {
-      return this.activities && this.categories
+      return this.activitiesLength && this.categoriesLength
     }
   },
   created () {
@@ -109,17 +114,7 @@ export default {
       .then(categories => {
     })
   },
-  methods: {
-    addActivity (newActivity) {
-      Vue.set(this.activities, newActivity.id, newActivity) 
-    },
-    handleActivityDelete (activity) {
-      store.deleteActivityAPI(activity)
-        .then(deleteActivity => {
-          Vue.delete(this.activities, deleteActivity.id)
-        })
-    }
-  } 
+ 
 }
 </script>
 
