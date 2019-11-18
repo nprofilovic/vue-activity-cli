@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isDataLoaded" id="activityApp">
+  <div id="activityApp">
     <nav class="navbar is-white topNav">
       <div class="container">
         <div class="navbar-brand">
@@ -13,7 +13,8 @@
         <div class="column is-3">
           <ActivityCreate
             :categories="categories"
-            
+            @activityCreated="addActivity" 
+            @activityDeleted="handleActivityDelete"
           />
         </div>
         <div class="column is-9">
@@ -25,13 +26,15 @@
               <div v-if="isFetching"> 
                 Loading...
               </div>
-              <ActivityItem
+              <div v-if="isDataLoaded">
+                <ActivityItem
                 v-for="activity in activities"
                 :key="activity.id"
                 :activity="activity"
                 :categories="categories"
-                
-              /> 
+                @activityDeleted="handleActivityDelete"
+               />
+              </div> 
             </div>
             <div v-if="!isFetching">
               <div class="activity-length">Currenly {{ activityLength }} activities</div>
@@ -50,6 +53,7 @@ import store from './store'
 import ActivityItem from '@/components/ActivityItem'
 import ActivityCreate from '@/components/ActivityCreate'
 import TheNavbar from '@/components/TheNavbar'
+import fakeApi from '@/lib/fakeApi'
 // import { fetchActivities, fetchUsers, fetchCategories, deleteActivityAPI } from '@/api'
 
 export default {
@@ -114,7 +118,17 @@ export default {
       .then(categories => {
     })
   },
- 
+  methods: {
+    addActivity (newActivity) {
+      Vue.set(this.activities, newActivity.id, newActivity) 
+    },
+    handleActivityDelete (activity) {
+      store.deleteActivityAPI(activity)
+        .then(deleteActivity => {
+          Vue.delete(this.activities, deleteActivity.id)
+        })
+    }
+  } 
 }
 </script>
 
