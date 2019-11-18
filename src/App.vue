@@ -7,14 +7,12 @@
         </div>
       </div>
     </nav>
-    <TheNavbar />
+    <TheNavbar @filterSelected="setFilter" />
     <section class="container">
       <div class="columns">
         <div class="column is-3">
           <ActivityCreate
             :categories="categories"
-            @activityCreated="addActivity" 
-            @activityDeleted="handleActivityDelete"
           />
         </div>
         <div class="column is-9">
@@ -28,11 +26,10 @@
               </div>
               <div v-if="isDataLoaded">
                 <ActivityItem
-                v-for="activity in activities"
+                v-for="activity in filteredActivities"
                 :key="activity.id"
                 :activity="activity"
                 :categories="categories"
-                @activityDeleted="handleActivityDelete"
                />
               </div> 
             </div>
@@ -72,10 +69,30 @@ export default {
       error: null,
       user: {},
       activities, 
-      categories
+      categories,
+      filter: 'all'
     }
   },
   computed: {
+    filteredActivities () {
+      let filteredActivities = {}
+      let condition
+      if (this.filter === 'all') {
+        return this.activities
+      }
+      if (this.filter === 'inprogress') {
+        condition = (value) => value > 0 && value < 100
+      } else if (this.filter === 'finished') {
+        condition = (value) => value === 100
+      } else {
+        condition = (value) => value === 0
+      }
+      filteredActivities = Object.values(this.activities)
+        .filter(activity => {
+          return condition(activity.progress)
+        })
+      return filteredActivities
+    },
     fullAppName () {
       return this.appName + ' by ' + this.creator
     },
@@ -119,14 +136,8 @@ export default {
     })
   },
   methods: {
-    addActivity (newActivity) {
-      Vue.set(this.activities, newActivity.id, newActivity) 
-    },
-    handleActivityDelete (activity) {
-      store.deleteActivityAPI(activity)
-        .then(deleteActivity => {
-          Vue.delete(this.activities, deleteActivity.id)
-        })
+    setFilter (filterOption){
+      this.filter = filterOption
     }
   } 
 }
